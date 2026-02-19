@@ -1,0 +1,19 @@
+<files>
+    <file>
+        <path>data/file1.txt</path>
+        <hash_type>md5</hash_type>
+        <hash>5d41402abc4b2a76b9719d911017c592</hash>
+    </file>
+
+    <file>
+        <path>data/file2.txt</path>
+        <hash_type>sha256</hash_type>
+        <hash>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</hash>
+    </file>
+
+    <file>
+        <path>/absolute/path/file3.bin</path>
+        <hash_type>crc32</hash_type>
+        <hash>1a2b3c4d</hash>
+    </file>
+</files>

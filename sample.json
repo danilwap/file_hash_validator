@@ -1,0 +1,20 @@
+{
+  "files": [
+    {
+      "path": "data/file1.txt",
+      "hash_type": "md5",
+      "hash": "5d41402abc4b2a76b9719d911017c592"
+    },
+    {
+      "path": "data/file2.txt",
+      "hash_type": "sha256",
+      "hash": "e3b0c44298fc1c149afbf4c8996fb924"
+              "27ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/absolute/path/file3.bin",
+      "hash_type": "crc32",
+      "hash": "1a2b3c4d"
+    }
+  ]
+}

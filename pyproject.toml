@@ -7,7 +7,7 @@ name = "file-hash-validator"
 version = "0.0.1"
 description = "CLI utility to validate file checksums from JSON/XML manifests"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = []
 
 [tool.setuptools]
@@ -18,7 +18,7 @@ where = ["src"]
 
 [tool.ruff]
 line-length = 88
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]

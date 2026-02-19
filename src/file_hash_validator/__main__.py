@@ -1,6 +1,6 @@
-def main() -> None:
-    print("file_hash_validator is running")
-
+# Точка входа при запуске через:
+# python -m file_hash_validator
+from .cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
