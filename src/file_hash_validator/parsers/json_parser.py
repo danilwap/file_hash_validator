@@ -40,4 +40,4 @@ def load_json_manifest(manifest_path: Path, workdir: Path) -> list[FileEntry]:
             result.append(parse_entry(item, workdir=workdir))
         except ManifestValidationError as e:
             raise ManifestValidationError(f"Ошибка в files[{i}]: {e}") from e
-        return result
+    return result

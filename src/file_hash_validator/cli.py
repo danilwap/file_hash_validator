@@ -5,6 +5,7 @@ from pathlib import Path
 
 from .parsers.common import ManifestError, ManifestValidationError
 from .parsers.json_parser import load_json_manifest
+from .parsers.xml_parser import load_xml_manifest
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -49,12 +50,14 @@ def main(argv: list[str] | None = None) -> int:
     # Определяем формат по расширению файла
     fmt = manifest_path.suffix.lower().lstrip(".")
 
-    if fmt != "json":
-        print("Пока реализован только JSON-парсер")
-        return 2
-
     try:
-        entries = load_json_manifest(manifest_path, workdir=workdir)
+        if fmt == "json":
+            entries = load_json_manifest(manifest_path, workdir=workdir)
+        elif fmt == "xml":
+            entries = load_xml_manifest(manifest_path, workdir=workdir)
+        else:
+            print("Неизвестный формат файла. Используйте .json или .xml")
+            return 2
     except (ManifestError, ManifestValidationError) as e:
         print(f"Ошибука манифеста: {e}")
         return 2
