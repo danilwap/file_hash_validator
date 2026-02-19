@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
+from .checker import check_entries
 from .parsers.common import ManifestError, ManifestValidationError
 from .parsers.json_parser import load_json_manifest
 from .parsers.xml_parser import load_xml_manifest
+
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -31,6 +34,12 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path.cwd(),
         help="Рабочая директория для относительных путей "
              "(по умолчанию: текущая директория).",
+    )
+
+    parser.add_argument(
+        "--no-progress",
+        action="store_true",
+        help="Не показывать прогресс выполнения.",
     )
 
     return parser
@@ -67,6 +76,27 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"Успешно загружено записей: {len(entries)}")
 
-    if entries:
-        print(f"Первая запись: path={entries[0].path} algo={entries[0].algo.value} "
-              f"hash={entries[0].expected}")
+    if not entries:
+        return 0
+
+    # прогресс по умолчанию включаем только если stderr — терминал
+    progress_enabled = (not args.no_progress) and sys.stderr.isatty()
+
+    result = check_entries(entries, progress_enabled=progress_enabled)
+
+    print(f"Готово. Успешно: {result.ok}/{result.total}")
+
+    if result.read_errors:
+        print("\nОшибки чтения файлов:")
+        for entry, err in result.read_errors:
+            print(f"- {entry.path} [{entry.algo.value}]: {err}")
+
+    if result.mismatched:
+        print("\nНесовпадения контрольных сумм:")
+        for entry, actual in result.mismatched:
+            print(f"- {entry.path} [{entry.algo.value}]: ожидается {entry.expected}, получено {actual}")
+
+        # коды завершения:
+        # 0 — всё ок
+        # 1 — есть несовпадения/ошибки чтения
+    return 0 if (not result.mismatched and not result.read_errors) else 1

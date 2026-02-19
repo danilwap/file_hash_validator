@@ -4,7 +4,7 @@ import hashlib
 import zlib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Union, Callable
 
 from .models import HashAlgo
 
@@ -39,6 +39,7 @@ def calculate(
     algo: Union[HashAlgo, str],
     *,
     chunk_size: int = DEFAULT_CHUNK_SIZE,
+    on_read: Callable[[int], None] | None = None,
 ) -> str:
     """
     calculate(path, algo) -> str
@@ -67,6 +68,8 @@ def calculate(
                     chunk = f.read(chunk_size)
                     if not chunk:
                         break
+                    if on_read:
+                        on_read(len(chunk))
                     crc = zlib.crc32(chunk, crc)
                 return f"{crc & 0xFFFFFFFF:08x}"
 
@@ -75,6 +78,8 @@ def calculate(
                 chunk = f.read(chunk_size)
                 if not chunk:
                     break
+                if on_read:
+                    on_read(len(chunk))
                 h.update(chunk)
             return h.hexdigest()
 
