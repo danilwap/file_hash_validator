@@ -8,8 +8,7 @@
     {
       "path": "data/file2.txt",
       "hash_type": "sha256",
-      "hash": "e3b0c44298fc1c149afbf4c8996fb924"
-              "27ae41e4649b934ca495991b7852b855"
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "path": "/absolute/path/file3.bin",

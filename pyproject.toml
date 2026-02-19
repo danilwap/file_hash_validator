@@ -5,10 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "file-hash-validator"
 version = "0.0.1"
-description = "CLI utility to validate file checksums from JSON/XML manifests"
+description = "Утилита для проверки контрольных сумм файлов из JSON/XML файла-списка."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []
+
+[project.scripts]
+file-hash-validator = "file_hash_validator.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
