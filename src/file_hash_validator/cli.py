@@ -28,7 +28,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--workdir",
         type=Path,
         default=Path.cwd(),
-        help="Рабочая директория для относительных путей (по умолчанию: текущая директория).",
+        help="Рабочая директория для относительных путей "
+             "(по умолчанию: текущая директория).",
     )
 
     return parser

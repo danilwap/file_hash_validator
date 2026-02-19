@@ -5,7 +5,6 @@ from pathlib import Path
 from ..models import FileEntry, HashAlgo
 
 
-
 class ManifestError(Exception):
     """Базовая ошибка манифеста (парсинг/валидация)"""
 
@@ -53,7 +52,7 @@ def normalize_expected_checksum(algo: HashAlgo, value: str) -> str:
         return s
 
     if algo == HashAlgo.CRC32:
-        if len(s) != 32:
+        if not (1 <= len(s) <= 8):
             raise ManifestValidationError("Для crc32 ожидается 1-8 hex-символа")
         return s.zfill(8)
 
