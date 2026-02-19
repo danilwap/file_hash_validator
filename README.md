@@ -17,18 +17,20 @@
 
 ```bash
 git clone https://github.com/danilwap/file_hash_validator.git
-cd file-hash-validator
+cd file_hash_validator
 ```
 
 ### 2 Создание и активация виртуального окружения
 
 ```bash
-python -m venv .venv
+
 
 # Windows
+python -m venv .venv
 .venv\Scripts\activate
 
 # Linux / macOS
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
@@ -48,11 +50,11 @@ file-hash-validator sample.xml
 
 ## Параметры
 
-| Параметр | Описание |
-|----------|----------|
-| `path-to-manifest` | Путь к JSON или XML файлу со списком файлов |
-| `--workdir` | Рабочая директория для относительных путей (по умолчанию — директория запуска утилиты) |
-| `--no-progress` | Не показывать прогресс выполнения |
+| Параметр             | Описание                                                                                 |
+|----------------------|------------------------------------------------------------------------------------------|
+| `path-to-manifest`   | Путь к JSON или XML файлу со списком файлов                                              |
+| `--workdir`          | Рабочая директория для относительных путей (по умолчанию — директория запуска утилиты)   |
+| `--no-progress`      | Не показывать прогресс выполнения                                                        |
 
 ## Формат манифеста
 
