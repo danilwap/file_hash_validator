@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, TextIO
-import sys
-import time
 
 
 def _fmt_bytes(n: int) -> str:
@@ -40,7 +40,8 @@ class Progress:
     _last_draw_ts: float = 0.0
 
     @classmethod
-    def from_entries(cls, total_files: int, *, stream: TextIO = sys.stderr, enabled: bool = True) -> "Progress":
+    def from_entries(cls, total_files: int, *, stream: TextIO = sys.stderr,
+                     enabled: bool = True) -> "Progress":
         return cls(total_files=total_files, stream=stream, enabled=enabled)
 
     def start(self) -> None:
@@ -96,7 +97,7 @@ class Progress:
                 detail = f" | {pct:3d}% ({_fmt_bytes(read)} / {_fmt_bytes(size)})"
             else:
                 # размер 0 — показываем 100% сразу
-                detail = f" | 100% (0 B / 0 B)"
+                detail = " | 100% (0 B / 0 B)"
 
         text = base + detail
 

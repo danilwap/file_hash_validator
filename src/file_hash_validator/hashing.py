@@ -4,7 +4,7 @@ import hashlib
 import zlib
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union, Callable
+from typing import Callable, Optional, Union
 
 from .models import HashAlgo
 

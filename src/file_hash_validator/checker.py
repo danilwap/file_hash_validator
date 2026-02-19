@@ -24,7 +24,8 @@ def _safe_size(path: Path) -> int | None:
         return None
 
 
-def check_entries(entries: Iterable[FileEntry], *, progress_enabled: bool = True) -> CheckResult:
+def check_entries(entries: Iterable[FileEntry], *, progress_enabled: bool = True) \
+        -> CheckResult:
     entries_list = list(entries)
     prog = Progress.from_entries(len(entries_list), enabled=progress_enabled)
     prog.start()

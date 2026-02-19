@@ -10,7 +10,6 @@ from .parsers.json_parser import load_json_manifest
 from .parsers.xml_parser import load_xml_manifest
 
 
-
 def build_parser() -> argparse.ArgumentParser:
     """
         Парсер аргументов командной строки
@@ -94,7 +93,8 @@ def main(argv: list[str] | None = None) -> int:
     if result.mismatched:
         print("\nНесовпадения контрольных сумм:")
         for entry, actual in result.mismatched:
-            print(f"- {entry.path} [{entry.algo.value}]: ожидается {entry.expected}, получено {actual}")
+            print(f"- {entry.path} [{entry.algo.value}]: "
+                  f"ожидается {entry.expected}, получено {actual}")
 
         # коды завершения:
         # 0 — всё ок
