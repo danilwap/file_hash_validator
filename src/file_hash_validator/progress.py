@@ -38,6 +38,7 @@ class Progress:
     current_read: int = 0
 
     _last_draw_ts: float = 0.0
+    _last_line_len: int = 0
 
     @classmethod
     def from_entries(cls, total_files: int, *, stream: TextIO = sys.stderr,
@@ -102,8 +103,14 @@ class Progress:
         text = base + detail
 
         # Каретка: обновляем одну строку
+        pad = max(0, self._last_line_len - len(text))
+        out = "\r" + text + (" " * pad)
+
         if endline:
-            self.stream.write("\r" + text + "\n")
+            self.stream.write(out + "\n")
+            self._last_line_len = 0
         else:
-            self.stream.write("\r" + text)
+            self.stream.write(out)
+            self._last_line_len = len(text)
+
         self.stream.flush()
