@@ -67,7 +67,7 @@ def main(argv: list[str] | None = None) -> int:
             print("Неизвестный формат файла. Используйте .json или .xml")
             return 2
     except (ManifestError, ManifestValidationError) as e:
-        print(f"Ошибука манифеста: {e}")
+        print(f"Ошибка манифеста: {e}")
         return 2
     except OSError as e:
         print(f"Ошибка чтения файла: {e}")

@@ -10,6 +10,7 @@ from .models import HashAlgo
 
 DEFAULT_CHUNK_SIZE = 1024 * 1024
 
+
 @dataclass
 class HashingError(Exception):
     """Ошибка расчёта контрольной суммы (чтение/доступ к файлу)."""
@@ -20,6 +21,17 @@ class HashingError(Exception):
     def __str__(self) -> str:
         base = f"{self.message}: {self.path}"
         return f"{base} ({self.cause})" if self.cause else base
+
+
+class CRC32Wrapper:
+    def __init__(self):
+        self._crc = 0
+
+    def update(self, chunk: bytes):
+        self._crc = zlib.crc32(chunk, self._crc)
+
+    def hexdigest(self) -> str:
+        return f"{self._crc & 0xFFFFFFFF:08x}"
 
 
 def _normalize_algo(algo: Union[HashAlgo, str]) -> HashAlgo:
@@ -35,11 +47,11 @@ def _normalize_algo(algo: Union[HashAlgo, str]) -> HashAlgo:
 
 
 def calculate(
-    path: Union[Path, str],
-    algo: Union[HashAlgo, str],
-    *,
-    chunk_size: int = DEFAULT_CHUNK_SIZE,
-    on_read: Callable[[int], None] | None = None,
+        path: Union[Path, str],
+        algo: Union[HashAlgo, str],
+        *,
+        chunk_size: int = DEFAULT_CHUNK_SIZE,
+        on_read: Callable[[int], None] | None = None,
 ) -> str:
     """
     calculate(path, algo) -> str
@@ -63,25 +75,18 @@ def calculate(
     try:
         with p.open("rb") as f:
             if a is HashAlgo.CRC32:
-                crc = 0
-                while True:
-                    chunk = f.read(chunk_size)
-                    if not chunk:
-                        break
-                    if on_read:
-                        on_read(len(chunk))
-                    crc = zlib.crc32(chunk, crc)
-                return f"{crc & 0xFFFFFFFF:08x}"
+                h = CRC32Wrapper()
+            else:
+                h = hashlib.new(a.value)
 
-            h = hashlib.new(a.value)
-            while True:
-                chunk = f.read(chunk_size)
-                if not chunk:
-                    break
+            while chunk := f.read(chunk_size):
                 if on_read:
                     on_read(len(chunk))
                 h.update(chunk)
+
             return h.hexdigest()
+
+
 
     except FileNotFoundError as e:
         raise HashingError("Файл не найден", p, e) from e
